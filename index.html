@@ -3,7 +3,32 @@
 
 <body>
   <h1>Hello World</h1>
-  <p>I'm hosted with GitHub Pages.</p>
+  <div id="text">
+    <p>I'm hosted with GitHub Pages.</p>
+  </div>
+  <script>
+    function getJSONP(url, success) {
+
+      var ud = '_' + +new Date,
+        script = document.createElement('script'),
+        head = document.getElementsByTagName('head')[0]
+          || document.documentElement;
+
+      window[ud] = function (data) {
+        head.removeChild(script);
+        success && success(data);
+      };
+
+      script.src = url.replace('callback=?', 'callback=' + ud);
+      head.appendChild(script);
+
+    }
+
+    getJSONP('https://poe.ninja/api/data/currencyoverview?league=Archnemesis&type=Currency', function (data) {
+      console.log(data);
+    });
+    document.getElementById("text").innerHTML = "Text added by JavaScript code";  
+  </script>
 </body>
 
 </html>
