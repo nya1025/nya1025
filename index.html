@@ -7,37 +7,35 @@
     <p>I'm hosted with GitHub Pages.</p>
   </div>
   <script>
-    function getJSONP(url, success) {
+    // Create a request variable and assign a new XMLHttpRequest object to it.
+    var request = new XMLHttpRequest()
 
-      var ud = '_' + +new Date,
-        script = document.createElement('script'),
-        head = document.getElementsByTagName('head')[0]
-          || document.documentElement;
+    // Open a new connection, using the GET request on the URL endpoint
+    request.open('GET', 'https://poe.ninja/api/data/currencyoverview?league=Archnemesis&type=Currency', true)
 
-      window[ud] = function (data) {
-        head.removeChild(script);
-        success && success(data);
-      };
-
-      script.src = url.replace('callback=?', 'callback=' + ud);
-      head.appendChild(script);
-
+    request.onload = function () {
+      // Begin accessing JSON data here, MAGIC IS HERE
     }
 
-    getJSONP('https://poe.ninja/api/data/currencyoverview?league=Archnemesis&type=Currency', function (data) {
-      var prices = data["lines"];
-      var jewellers_orb = 1;
-      var orb_of_fusing = 4;
-      array.forEach(function (item, index) {
-        if (item["currencyTypeName"] === "Orb of Fusing") {
-          orb_of_fusing = 1 / item["pay"]["value"];
-        }
-        if (item["currencyTypeName"] === "Jeweller's Orb") {
-          jewellers_orb = item["receive"]["value"];
-        }
-      });
-      document.getElementById("text").innerHTML = "Text added by JavaScript code: " + (jewellers_orb - orb_of_fusing);
+    // Send request
+    request.send()
+
+    // Begin accessing JSON data here
+    var data = JSON.parse(this.response)
+
+    // Now you can use your data, for example:
+    var prices = data["lines"];
+    var jewellers_orb = 1;
+    var orb_of_fusing = 4;
+    prices.forEach(function (item, index) {
+      if (item["currencyTypeName"] === "Orb of Fusing") {
+        orb_of_fusing = 1 / item["pay"]["value"];
+      }
+      if (item["currencyTypeName"] === "Jeweller's Orb") {
+        jewellers_orb = item["receive"]["value"];
+      }
     });
+    document.getElementById("text").innerHTML = "Text added by JavaScript code: " + (jewellers_orb - orb_of_fusing);
   </script>
 </body>
 
