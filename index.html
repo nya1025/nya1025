@@ -25,9 +25,19 @@
     }
 
     getJSONP('https://poe.ninja/api/data/currencyoverview?league=Archnemesis&type=Currency', function (data) {
-      console.log(data);
+      var prices = data["lines"];
+      var jewellers_orb = 1;
+      var orb_of_fusing = 4;
+      array.forEach(function (item, index) {
+        if (item["currencyTypeName"] === "Orb of Fusing") {
+          orb_of_fusing = 1 / item["pay"]["value"];
+        }
+        if (item["currencyTypeName"] === "Jeweller's Orb") {
+          jewellers_orb = item["receive"]["value"];
+        }
+      });
+      document.getElementById("text").innerHTML = "Text added by JavaScript code: " + (jewellers_orb - orb_of_fusing);
     });
-    document.getElementById("text").innerHTML = "Text added by JavaScript code";  
   </script>
 </body>
 
